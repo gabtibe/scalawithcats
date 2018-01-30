@@ -1,7 +1,11 @@
 package me.scalawithcats.typeclasses
 
-trait Printable[A] {
+trait Printable[A] { self =>
   def format(value: A): String
+  def contramap[B](f: B => A): Printable[B] =
+    new Printable[B] {
+      override def format(value: B): String = self.format(f(value))
+    }
 }
 
 object Printable {
